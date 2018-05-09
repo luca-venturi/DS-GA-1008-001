@@ -124,3 +124,21 @@ class dataGenerator:
             return [OP.cuda(), x.cuda()], c.cuda()
         else:
             return [OP, x, c]
+
+# Test
+
+if __name__ == '__main__':
+    generator = dataGenerator()
+    generator.NUM_SAMPLES_train = 100
+    generator.NUM_SAMPLES_test = 100
+    generator.N = 50
+    J = 5
+    generator.J = J-2
+    generator.create_train_dataset()
+    generator.create_test_dataset()
+    G, c = generator.sample_batch(32)
+    print(G[0].shape,x.shape, c.shape)
+    print(G[0][0, :, :, 1])
+    print(G[1][0, :, 0], c[0, :])
+    print(sum(c[0,:].data.cpu().numpy()))
+    print(generator.average_clique(G[0]))
