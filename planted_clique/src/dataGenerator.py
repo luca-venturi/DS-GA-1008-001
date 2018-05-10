@@ -8,6 +8,8 @@ import torch.nn.functional as F
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
+import pickle
+import os.path
 
 dtype = torch.cuda.FloatTensor
 dtype_l = torch.cuda.LongTensor
@@ -72,8 +74,8 @@ class dataGenerator:
         OP[:, :, 0] = np.eye(N)
         for j in range(self.J):
             OP[:, :, j + 1] = W_pow.copy()
-            W_pow = np.minimum(np.dot(W_pow, W_pow), np.ones(W_pow.shape))
-            #W_pow = np.minimum(np.dot(W_pow, W), np.ones(W_pow.shape))
+            #W_pow = np.minimum(np.dot(W_pow, W_pow), np.ones(W_pow.shape))
+            W_pow = np.minimum(np.dot(W_pow, W), np.ones(W_pow.shape))
         OP[:, :, self.J] = D
         OP[:, :, self.J + 1] = np.ones((N, N)) * (1.0 / float(N))
         x = np.reshape(deg, (N, 1))
@@ -88,11 +90,18 @@ class dataGenerator:
     
     def create_train_dataset(self):
         self.data_train = []
-        for i in range(self.NUM_SAMPLES_train):
-            sample = self.compute_sample()
-            self.data_train.append(sample)
-            if i % 250 == 0:
-                print('train samples number {} created'.format(i))
+        file_path = 'data/train_data_N={}_Ntrain={}'.format(self.N, self.NUM_SAMPLES_train)
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as train_data_file:
+                self.data_train = pickle.load(train_data_file)
+        else:
+            for i in range(self.NUM_SAMPLES_train):
+                sample = self.compute_sample()
+                self.data_train.append(sample)
+                if i % 250 == 0:
+                    print('train samples number {} created'.format(i))
+            with open(file_path, 'wb') as train_data_file:
+                pickle.dump(self.data_train, train_data_file)
             
     def create_test_dataset(self):
         self.data_test = []

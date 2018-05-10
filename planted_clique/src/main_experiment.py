@@ -21,20 +21,20 @@ dtype_l = torch.cuda.LongTensor
 
 logger = make_logger()
 generator = dataGenerator()
-generator.NUM_SAMPLES_train = 10#000
-generator.N = 50#0
+generator.NUM_SAMPLES_train = 2000
+generator.N = 600
 J = 6
 generator.J = J-2
 num_features = 8 # must be even!
 num_layers = 6
-args = {'N' = generator.N, 'edge density' : 0.5, 'planted clique size' : False}
+args = {'N' : generator.N, 'edge density' : 0.5, 'planted clique size' : False}
 logger.args = args
 generator.edge_density = args['edge density']
 generator.clique_size = args['planted clique size']
 generator.create_train_dataset()
 print('Dataset created')
 gnn = GNN(num_features, num_layers, J).type(dtype)
-train(gnn, generator, logger, iterations=300, batch_size=32)#600
+train(gnn, generator, logger, iterations=1000, batch_size=32)
 
 def test(model, generator, logger):
     # model should be a gnn
@@ -56,8 +56,8 @@ def test(model, generator, logger):
 
 generator.NUM_SAMPLES_test = 100
 densities = np.arange(0.,1.,step=0.1)
-clique_sizes = [6, 10, 15, 20]
-colors = {6:'b', 10:'k', 15:'r', 20:'g'}
+clique_sizes = [5, 10, 20, 32]
+colors = {5:'b', 10:'k', 20:'r', 32:'g'}
 test_results = {}
 for d in densities:
     for cs in clique_sizes:
@@ -77,9 +77,9 @@ for cs in clique_sizes:
     plt.semilogy(densities, [test_results[d, cs, 'loss'] for d in densities], 'b', label='C={}'.format(cs), color=colors[cs])
 plt.xlabel('Edge density')
 plt.ylabel('Cross Entropy Loss')
-plt.title('Test Loss: N={}'.format(self.args['N']))
+plt.title('Test Loss: N={}'.format(logger.args['N']))
 plt.legend()
-path = 'plots/test_loss_N={}'.format(self.args['N'])) 
+path = 'plots/test_loss_N={}'.format(logger.args['N'])
 plt.savefig(path)
 
 # plot accuracy loss
@@ -90,7 +90,7 @@ for cs in clique_sizes:
     plt.plot(densities, [test_results[d, cs, 'accuracy'] for d in densities], 'b', label='C={}'.format(cs), color=colors[cs])
 plt.xlabel('Edge density')
 plt.ylabel('Accuracy')
-plt.title('Test Accuracy: N={}'.format(self.args['N']))
+plt.title('Test Accuracy: N={}'.format(logger.args['N']))
 plt.legend()
-path = 'plots/test_accuracy_N={}'.format(self.args['N'])) 
+path = 'plots/test_accuracy_N={}'.format(logger.args['N'])
 plt.savefig(path)
