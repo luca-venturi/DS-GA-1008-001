@@ -7,8 +7,9 @@ import torch.nn.functional as F
 
 import numpy as np
 import networkx as nx
-import matplotlib.pyplot as plt
+import matplotlib
 matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 from dataGenerator import dataGenerator
 from model import *
