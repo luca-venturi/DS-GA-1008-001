@@ -69,7 +69,6 @@ for d in densities:
         
 # plot test loss
 
-plt.figure(0)
 plt.clf()
 for cs in clique_sizes: 
     plt.semilogy(densities, [test_results[d, cs, 'loss'] for d in densities], 'b', label='C={}'.format(cs), color=colors[cs])
@@ -82,7 +81,6 @@ plt.savefig(path)
 
 # plot accuracy loss
 
-plt.figure(1)
 plt.clf()
 for cs in clique_sizes: 
     plt.plot(densities, [test_results[d, cs, 'accuracy'] for d in densities], 'b', label='C={}'.format(cs), color=colors[cs])

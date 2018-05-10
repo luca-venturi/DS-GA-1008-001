@@ -46,7 +46,6 @@ class make_logger(object):
         self.accuracy_test.append(accuracy)
 
     def plot_train_loss(self):
-        plt.figure(0)
         plt.clf()
         iters = range(len(self.loss_train))
         plt.semilogy(iters, self.loss_train, 'b')
@@ -57,7 +56,6 @@ class make_logger(object):
         plt.savefig(path)
 
     def plot_train_accuracy(self):
-        plt.figure(1)
         plt.clf()
         iters = range(len(self.accuracy_train))
         plt.plot(iters, self.accuracy_train, 'b')
