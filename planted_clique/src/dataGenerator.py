@@ -31,7 +31,11 @@ class dataGenerator:
       
     def plantedClique(self, p, N, C):
         W = self.ErdosRenyi(p, N)
-        clique = np.random.choice(N, C, replace=False)
+        if C == False:
+            C = np.random.randint(3,N)
+            clique = np.random.choice(N, C, replace=False)
+        else:
+            clique = np.random.choice(N, C, replace=False)
         for i in clique:
             for j in clique:
                 if j != i:
@@ -68,8 +72,8 @@ class dataGenerator:
         OP[:, :, 0] = np.eye(N)
         for j in range(self.J):
             OP[:, :, j + 1] = W_pow.copy()
-            # W_pow = np.minimum(np.dot(W_pow, W_pow), np.ones(W_pow.shape))
-            W_pow = np.minimum(np.dot(W_pow, W), np.ones(W_pow.shape))
+            W_pow = np.minimum(np.dot(W_pow, W_pow), np.ones(W_pow.shape))
+            #W_pow = np.minimum(np.dot(W_pow, W), np.ones(W_pow.shape))
         OP[:, :, self.J] = D
         OP[:, :, self.J + 1] = np.ones((N, N)) * (1.0 / float(N))
         x = np.reshape(deg, (N, 1))

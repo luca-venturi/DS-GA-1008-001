@@ -48,8 +48,10 @@ def test(model, generator, logger):
         logger.add_test_loss(loss)
     logger.add_test_accuracy(pred, labels)
         
-    print('Test Loss: {:.4}'.format(np.mean(logger.loss_test)))
-    print('Test Accuracy: {:.4}'.format(np.mean(logger.accuracy_test)))
+    print('Clique Size: {}, Density: {:.2}, Test Loss: {:.4}'.format(logger.args['planted clique size'], logger.args['edge density'],
+        np.mean(logger.loss_test)))
+    print('Clique Size: {}, Density: {:.2}, Test Accuracy: {:.4}'.format(logger.args['planted clique size'], logger.args['edge density'],
+        np.mean(logger.accuracy_test)))
     return np.mean(logger.loss_test), np.mean(logger.accuracy_test)
     
 # Test
