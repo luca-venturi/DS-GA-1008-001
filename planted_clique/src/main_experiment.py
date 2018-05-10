@@ -19,12 +19,12 @@ dtype_l = torch.cuda.LongTensor
 
 logger = make_logger()
 generator = dataGenerator()
-generator.NUM_SAMPLES_train = 5000
-generator.N = 200
+generator.NUM_SAMPLES_train = 10000
+generator.N = 500
 J = 6
 generator.J = J-2
 num_features = 8 # must be even!
-num_layers = 8
+num_layers = 6
 args = {'edge density' : 0.5, 'planted clique size' : False}
 logger.args = args
 generator.edge_density = args['edge density']
@@ -32,7 +32,7 @@ generator.clique_size = args['planted clique size']
 generator.create_train_dataset()
 print('Dataset created')
 gnn = GNN(num_features, num_layers, J).type(dtype)
-train(gnn, generator, logger, iterations=5000, batch_size=32)
+train(gnn, generator, logger, iterations=6000, batch_size=32)
 
 def test(model, generator, logger):
     # model should be a gnn
@@ -77,6 +77,8 @@ plt.xlabel('Edge density')
 plt.ylabel('Cross Entropy Loss')
 plt.title('Test Loss')
 plt.legend()
+path = 'plots/test_loss' 
+plt.savefig(path)
 
 # plot accuracy loss
 
@@ -88,3 +90,5 @@ plt.xlabel('Edge density')
 plt.ylabel('Accuracy')
 plt.title('Test Accuracy')
 plt.legend()
+path = 'plots/test_accuracy' 
+plt.savefig(path)
