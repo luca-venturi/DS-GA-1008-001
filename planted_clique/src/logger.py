@@ -54,8 +54,8 @@ class make_logger(object):
         plt.semilogy(iters, self.loss_train, 'b')
         plt.xlabel('iterations')
         plt.ylabel('Cross Entropy Loss')
-        plt.title('Training Loss: p={}, C={}'.format(self.args['edge density'], self.args['planted clique size']))
-        path = 'plots/training_loss_p={}_C={}.png'.format(self.args['edge density'], self.args['planted clique size']) 
+        plt.title('Training Loss: N={}, p={}, C={}'.format(self.args['N'], self.args['edge density'], self.args['planted clique size']))
+        path = 'plots/training_loss_N={}_p={}_C={}.png'.format(self.args['N'], self.args['edge density'], self.args['planted clique size']) 
         plt.savefig(path)
 
     def plot_train_accuracy(self):
@@ -65,6 +65,6 @@ class make_logger(object):
         plt.plot(iters, self.accuracy_train, 'b')
         plt.xlabel('iterations')
         plt.ylabel('Accuracy')
-        plt.title('Training Accuracy: p={}, C={}'.format(self.args['edge density'], self.args['planted clique size']))
-        path = 'plots/training_accuracy_p={}_C={}.png'.format(self.args['edge density'], self.args['planted clique size']) 
+        plt.title('Training Accuracy: N={}, p={}, C={}'.format(self.args['N'], self.args['edge density'], self.args['planted clique size']))
+        path = 'plots/training_accuracy_N={}_p={}_C={}.png'.format(self.args['N'], self.args['edge density'], self.args['planted clique size'])
         plt.savefig(path)

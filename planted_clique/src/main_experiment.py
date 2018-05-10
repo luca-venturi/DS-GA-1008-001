@@ -27,7 +27,7 @@ J = 6
 generator.J = J-2
 num_features = 8 # must be even!
 num_layers = 6
-args = {'edge density' : 0.5, 'planted clique size' : False}
+args = {'N' = generator.N, 'edge density' : 0.5, 'planted clique size' : False}
 logger.args = args
 generator.edge_density = args['edge density']
 generator.clique_size = args['planted clique size']
@@ -61,7 +61,7 @@ colors = {6:'b', 10:'k', 15:'r', 20:'g'}
 test_results = {}
 for d in densities:
     for cs in clique_sizes:
-        args = {'edge density' : d, 'planted clique size' : cs}
+        args = {'N' : generator.N, 'edge density' : d, 'planted clique size' : cs}
         logger.args = args
         generator.edge_density = args['edge density']
         generator.clique_size = args['planted clique size']
@@ -77,9 +77,9 @@ for cs in clique_sizes:
     plt.semilogy(densities, [test_results[d, cs, 'loss'] for d in densities], 'b', label='C={}'.format(cs), color=colors[cs])
 plt.xlabel('Edge density')
 plt.ylabel('Cross Entropy Loss')
-plt.title('Test Loss')
+plt.title('Test Loss: N={}'.format(self.args['N']))
 plt.legend()
-path = 'plots/test_loss' 
+path = 'plots/test_loss_N={}'.format(self.args['N'])) 
 plt.savefig(path)
 
 # plot accuracy loss
@@ -90,7 +90,7 @@ for cs in clique_sizes:
     plt.plot(densities, [test_results[d, cs, 'accuracy'] for d in densities], 'b', label='C={}'.format(cs), color=colors[cs])
 plt.xlabel('Edge density')
 plt.ylabel('Accuracy')
-plt.title('Test Accuracy')
+plt.title('Test Accuracy: N={}'.format(self.args['N']))
 plt.legend()
-path = 'plots/test_accuracy' 
+path = 'plots/test_accuracy_N={}'.format(self.args['N'])) 
 plt.savefig(path)
