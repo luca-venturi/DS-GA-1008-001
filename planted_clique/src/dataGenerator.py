@@ -88,9 +88,11 @@ class dataGenerator:
     
     def create_train_dataset(self):
         self.data_train = []
-        for _ in range(self.NUM_SAMPLES_train):
+        for i in range(self.NUM_SAMPLES_train):
             sample = self.compute_sample()
             self.data_train.append(sample)
+            if i % 250 == 0:
+                print('train samples number {} created'.format(i))
             
     def create_test_dataset(self):
         self.data_test = []
