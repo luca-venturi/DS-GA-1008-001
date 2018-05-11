@@ -22,7 +22,7 @@ dtype_l = torch.cuda.LongTensor
 logger = make_logger()
 generator = dataGenerator()
 generator.NUM_SAMPLES_train = 10000
-generator.N = 200
+generator.N = 50#200
 J = 6
 generator.J = J-2
 num_features = 8 # must be even!
@@ -34,7 +34,7 @@ generator.clique_size = args['planted clique size']
 generator.create_train_dataset()
 print('Dataset created')
 gnn = GNN(num_features, num_layers, J).type(dtype)
-train(gnn, generator, logger, iterations=10000, batch_size=32)
+train(gnn, generator, logger, iterations=10000, batch_size=32)#10000
 
 generator.NUM_SAMPLES_test = 100
 densities = np.arange(0.,1.,step=0.1)
