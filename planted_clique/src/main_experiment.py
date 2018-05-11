@@ -21,8 +21,8 @@ dtype_l = torch.cuda.LongTensor
 
 logger = make_logger()
 generator = dataGenerator()
-generator.NUM_SAMPLES_train = 2000
-generator.N = 600
+generator.NUM_SAMPLES_train = 10000
+generator.N = 200
 J = 6
 generator.J = J-2
 num_features = 8 # must be even!
@@ -34,25 +34,7 @@ generator.clique_size = args['planted clique size']
 generator.create_train_dataset()
 print('Dataset created')
 gnn = GNN(num_features, num_layers, J).type(dtype)
-train(gnn, generator, logger, iterations=1000, batch_size=32)
-
-def test(model, generator, logger):
-    # model should be a gnn
-    # generator is the data_generator
-    G, labels = generator.sample_batch(generator.NUM_SAMPLES_test, is_training=False)
-    pred = model(G)
-    logger.loss_test = []
-    logger.accuracy_test = []
-    for i in range(generator.NUM_SAMPLES_test):
-        loss = compute_loss(pred[i,:], labels[i,:])
-        logger.add_test_loss(loss)
-    logger.add_test_accuracy(pred, labels)
-        
-    print('Clique Size: {}, Density: {:.2}, Test Loss: {:.4}'.format(logger.args['planted clique size'], logger.args['edge density'],
-        np.mean(logger.loss_test)))
-    print('Clique Size: {}, Density: {:.2}, Test Accuracy: {:.4}'.format(logger.args['planted clique size'], logger.args['edge density'],
-        np.mean(logger.accuracy_test)))
-    return np.mean(logger.loss_test), np.mean(logger.accuracy_test)
+train(gnn, generator, logger, iterations=10000, batch_size=32)
 
 generator.NUM_SAMPLES_test = 100
 densities = np.arange(0.,1.,step=0.1)
@@ -67,7 +49,7 @@ for d in densities:
         generator.clique_size = args['planted clique size']
         generator.create_test_dataset()
         print('Test dataset created')
-        test_results[d, cs, 'loss'], test_results[d, cs, 'accuracy'] = test(gnn, generator, logger)
+        test_results[d, cs, 'loss'], test_results[d, cs, 'accuracy'], test_results[d, cs, 'exact accuracy'], test_results[d, cs, 'mismatch'] = test(gnn, generator, logger)
         
 # plot test loss
 
@@ -93,4 +75,30 @@ plt.ylabel('Accuracy')
 plt.title('Test Accuracy: N={}'.format(logger.args['N']))
 plt.legend()
 path = 'plots/test_accuracy_N={}'.format(logger.args['N'])
+plt.savefig(path)
+
+# plot accuracy loss
+
+plt.figure(1)
+plt.clf()
+for cs in clique_sizes: 
+    plt.plot(densities, [test_results[d, cs, 'exact accuracy'] for d in densities], 'b', label='C={}'.format(cs), color=colors[cs])
+plt.xlabel('Edge density')
+plt.ylabel('Accuracy')
+plt.title('Test Exact Accuracy: N={}'.format(logger.args['N']))
+plt.legend()
+path = 'plots/test_exact_accuracy_N={}'.format(logger.args['N'])
+plt.savefig(path)
+
+# plot accuracy loss
+
+plt.figure(1)
+plt.clf()
+for cs in clique_sizes: 
+    plt.plot(densities, [test_results[d, cs, 'mismatch'] for d in densities], 'b', label='C={}'.format(cs), color=colors[cs])
+plt.xlabel('Edge density')
+plt.ylabel('Mismatch')
+plt.title('Test Mismatch: N={}'.format(logger.args['N']))
+plt.legend()
+path = 'plots/test_mismatch_N={}'.format(logger.args['N'])
 plt.savefig(path)

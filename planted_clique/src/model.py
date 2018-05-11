@@ -90,7 +90,7 @@ class GNN(nn.Module):
         return out[1]
       
 def predict_clique(y):
-    return torch.ge(y, 0.5).type(dtype)
+    return torch.ge(y, 0.).type(dtype)
 
 # Loss function
     

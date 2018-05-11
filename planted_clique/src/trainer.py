@@ -34,6 +34,8 @@ def train(model, generator, logger, iterations=60000, batch_size=32, clip_grad_n
             print('Iter: {}, Loss: {:.4}'.format(iter_count,loss.data[0]))
     logger.plot_train_accuracy()
     logger.plot_train_loss()
+    logger.plot_train_exact_accuracy()
+    logger.plot_train_mismatch()
     print('Optimization finished.')
     
 def test(model, generator, logger):
@@ -43,16 +45,24 @@ def test(model, generator, logger):
     pred = model(G)
     logger.loss_test = []
     logger.accuracy_test = []
+    logger.exact_accuracy_test = []
+    logger.mismatch_test = []
     for i in range(generator.NUM_SAMPLES_test):
         loss = compute_loss(pred[i,:], labels[i,:])
         logger.add_test_loss(loss)
     logger.add_test_accuracy(pred, labels)
+    logger.add_test_exact_accuracy(pred, labels)
+    logger.add_test_mismatch(pred, labels)
         
     print('Clique Size: {}, Density: {:.2}, Test Loss: {:.4}'.format(logger.args['planted clique size'], logger.args['edge density'],
         np.mean(logger.loss_test)))
     print('Clique Size: {}, Density: {:.2}, Test Accuracy: {:.4}'.format(logger.args['planted clique size'], logger.args['edge density'],
         np.mean(logger.accuracy_test)))
-    return np.mean(logger.loss_test), np.mean(logger.accuracy_test)
+    print('Clique Size: {}, Density: {:.2}, Test Exact Accuracy: {:.4}'.format(logger.args['planted clique size'], logger.args['edge density'],
+        np.mean(logger.exact_accuracy_test)))
+    print('Clique Size: {}, Density: {:.2}, Test Mismatch: {:.4}'.format(logger.args['planted clique size'], logger.args['edge density'],
+        np.mean(logger.mismatch_test)))    
+    return np.mean(logger.loss_test), np.mean(logger.accuracy_test), np.mean(logger.exact_accuracy_test), np.mean(logger.mismatch_test)
     
 # Test
 

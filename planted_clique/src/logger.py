@@ -24,6 +24,21 @@ def compute_recovery_rate(pred, labels):
     accuracy = 1 - frob_norm
     accuracy = accuracy.mean(0).squeeze()
     return accuracy.data.cpu().numpy()[0]
+    
+def compute_exact_recovery_rate(pred, labels):
+    pred = predict_clique(pred)
+    error = 1 - torch.eq(pred, labels).type(dtype)
+    frob_norm = torch.max(error, 1)[0]
+    accuracy = 1 - frob_norm
+    accuracy = accuracy.mean(0).squeeze()
+    return accuracy.data.cpu().numpy()[0]
+    
+def compute_mismatch(pred, labels):
+    pred = predict_clique(pred)
+    error = 1 - torch.eq(pred, labels).type(dtype)
+    frob_norm = torch.sum(error, 1)
+    accuracy = frob_norm.mean(0).squeeze()
+    return accuracy.data.cpu().numpy()[0]
 
 class make_logger(object):
     def __init__(self):
@@ -31,6 +46,10 @@ class make_logger(object):
         self.loss_test = []
         self.accuracy_train = []
         self.accuracy_test = []
+        self.exact_accuracy_train = []
+        self.exact_accuracy_test = []
+        self.mismatch_train = []
+        self.mismatch_test = []
         self.args = {}
 
     def add_train_loss(self, loss):
@@ -46,6 +65,22 @@ class make_logger(object):
     def add_test_accuracy(self, pred, labels):
         accuracy = compute_recovery_rate(pred, labels)
         self.accuracy_test.append(accuracy)
+        
+    def add_train_exact_accuracy(self, pred, labels):
+        accuracy = compute_exact_recovery_rate(pred, labels)
+        self.exact_accuracy_train.append(accuracy)
+
+    def add_test_exact_accuracy(self, pred, labels):
+        accuracy = compute_exact_recovery_rate(pred, labels)
+        self.exact_accuracy_test.append(accuracy)
+        
+    def add_train_mismatch(self, pred, labels):
+        accuracy = compute_mismatch(pred, labels)
+        self.mismatch_train.append(accuracy)
+
+    def add_test_mismatch(self, pred, labels):
+        accuracy = compute_mismatch(pred, labels)
+        self.mismatch_test.append(accuracy)
 
     def plot_train_loss(self):
         plt.figure(0)
@@ -67,4 +102,26 @@ class make_logger(object):
         plt.ylabel('Accuracy')
         plt.title('Training Accuracy: N={}, p={}, C={}'.format(self.args['N'], self.args['edge density'], self.args['planted clique size']))
         path = 'plots/training_accuracy_N={}_p={}_C={}.png'.format(self.args['N'], self.args['edge density'], self.args['planted clique size'])
+        plt.savefig(path)
+        
+    def plot_train_exact_accuracy(self):
+        plt.figure(1)
+        plt.clf()
+        iters = range(len(self.exact_accuracy_train))
+        plt.plot(iters, self.exact_accuracy_train, 'b')
+        plt.xlabel('iterations')
+        plt.ylabel('Accuracy')
+        plt.title('Training Exact Accuracy: N={}, p={}, C={}'.format(self.args['N'], self.args['edge density'], self.args['planted clique size']))
+        path = 'plots/training_exact_accuracy_N={}_p={}_C={}.png'.format(self.args['N'], self.args['edge density'], self.args['planted clique size'])
+        plt.savefig(path)
+        
+    def plot_train_mismatch(self):
+        plt.figure(1)
+        plt.clf()
+        iters = range(len(self.mismatch_train))
+        plt.plot(iters, self.mismatch_train, 'b')
+        plt.xlabel('iterations')
+        plt.ylabel('Mismatch')
+        plt.title('Training Mismatch: N={}, p={}, C={}'.format(self.args['N'], self.args['edge density'], self.args['planted clique size']))
+        path = 'plots/training_mismatch_N={}_p={}_C={}.png'.format(self.args['N'], self.args['edge density'], self.args['planted clique size'])
         plt.savefig(path)

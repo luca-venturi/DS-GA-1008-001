@@ -90,7 +90,7 @@ class dataGenerator:
     
     def create_train_dataset(self):
         self.data_train = []
-        file_path = 'data/train_data_N={}_Ntrain={}'.format(self.N, self.NUM_SAMPLES_train)
+        file_path = 'data/train_data_N={}_Ntrain={}_C={}_p={}'.format(self.N, self.NUM_SAMPLES_train, self.clique_size, self.edge_density)
         if os.path.exists(file_path):
             with open(file_path, 'rb') as train_data_file:
                 self.data_train = pickle.load(train_data_file)
