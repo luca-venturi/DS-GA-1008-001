@@ -75,7 +75,7 @@ plt.savefig(path)
 
 plt.figure(2)
 plt.clf()
-plt.plot(clique_sizes, [test_results[cs, 'mismatch'] for d in clique_sizes], 'b')
+plt.plot(clique_sizes, [test_results[cs, 'mismatch'] for cs in clique_sizes], 'b')
 plt.xlabel('Edge density')
 plt.ylabel('Mismatch')
 plt.title('Test Mismatch: N={}'.format(logger.args['N']))
