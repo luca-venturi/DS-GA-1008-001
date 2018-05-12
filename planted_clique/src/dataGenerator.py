@@ -100,8 +100,8 @@ class dataGenerator:
                 self.data_train.append(sample)
                 if i % 250 == 0:
                     print('train samples number {} created'.format(i))
-            with open(file_path, 'wb') as train_data_file:
-                pickle.dump(self.data_train, train_data_file)
+            #with open(file_path, 'wb') as train_data_file:
+                #pickle.dump(self.data_train, train_data_file)
             
     def create_test_dataset(self):
         self.data_test = []
