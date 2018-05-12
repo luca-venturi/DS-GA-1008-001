@@ -86,4 +86,4 @@ plt.savefig(path)
 # print
 
 for cs in clique_sizes:
-    print('CS = {} -> mismatch = {}').format(cs, test_results[cs, 'mismatch'])
+    print('CS = {} -> mismatch = {}'.format(cs, test_results[cs, 'mismatch']))
