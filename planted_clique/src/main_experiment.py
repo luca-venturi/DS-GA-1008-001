@@ -27,7 +27,8 @@ J = 6
 generator.J = J-2
 num_features = 8 # must be even!
 num_layers = 6
-args = {'N' : generator.N, 'edge density' : 0.5, 'planted clique size' : False}
+C = 32
+args = {'N' : generator.N, 'edge density' : 0.5, 'planted clique size' : C}
 logger.args = args
 generator.edge_density = args['edge density']
 generator.clique_size = args['planted clique size']
@@ -38,7 +39,7 @@ train(gnn, generator, logger, iterations=10000, batch_size=32)#10000
 
 generator.NUM_SAMPLES_test = 100
 densities = np.arange(0.,1.,step=0.1)
-clique_sizes = [5, 10, 20, 32]
+clique_sizes = [C]
 colors = {5:'b', 10:'k', 20:'r', 32:'g'}
 test_results = {}
 for d in densities:
@@ -64,7 +65,7 @@ plt.legend()
 path = 'plots/test_loss_N={}'.format(logger.args['N'])
 plt.savefig(path)
 
-# plot accuracy loss
+# plot test accuracy
 
 plt.figure(1)
 plt.clf()
@@ -77,20 +78,7 @@ plt.legend()
 path = 'plots/test_accuracy_N={}'.format(logger.args['N'])
 plt.savefig(path)
 
-# plot accuracy loss
-
-plt.figure(1)
-plt.clf()
-for cs in clique_sizes: 
-    plt.plot(densities, [test_results[d, cs, 'exact accuracy'] for d in densities], 'b', label='C={}'.format(cs), color=colors[cs])
-plt.xlabel('Edge density')
-plt.ylabel('Accuracy')
-plt.title('Test Exact Accuracy: N={}'.format(logger.args['N']))
-plt.legend()
-path = 'plots/test_exact_accuracy_N={}'.format(logger.args['N'])
-plt.savefig(path)
-
-# plot accuracy loss
+# plot test mismatch
 
 plt.figure(1)
 plt.clf()
