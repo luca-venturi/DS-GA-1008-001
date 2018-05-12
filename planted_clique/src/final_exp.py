@@ -22,7 +22,7 @@ dtype_l = torch.cuda.LongTensor
 
 logger = make_logger()
 
-clique_sizes = np.arange(5, 20, dtype=float) # 33
+clique_sizes = np.arange(5, 20) # 33
 test_results = {}
 for C in clique_sizes:
     generator = dataGenerator()
@@ -45,7 +45,7 @@ for C in clique_sizes:
     generator.create_test_dataset()
     print('Test dataset created')
     test_results[cs, 'loss'], test_results[cs, 'accuracy'], _, test_results[cs, 'mismatch'] = test(gnn, generator, logger)
-    test_results[cs, 'mismatch'] /= C
+    test_results[cs, 'mismatch'] /= float(C)
         
 # plot test loss
 
