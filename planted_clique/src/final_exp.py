@@ -55,7 +55,6 @@ plt.semilogy(clique_sizes, [test_results[cs, 'loss'] for cs in clique_sizes], 'b
 plt.xlabel('Edge density')
 plt.ylabel('Cross Entropy Loss')
 plt.title('Test Loss: N={}'.format(logger.args['N']))
-plt.legend()
 path = 'plots/test_loss_N={}_trained_with_C'.format(logger.args['N'])
 plt.savefig(path)
 
@@ -67,7 +66,6 @@ plt.plot(clique_sizes, [test_results[cs, 'accuracy'] for cs in clique_sizes], 'b
 plt.xlabel('Edge density')
 plt.ylabel('Accuracy')
 plt.title('Test Accuracy: N={}'.format(logger.args['N']))
-plt.legend()
 path = 'plots/test_accuracy_N={}_trained_with_C'.format(logger.args['N'])
 plt.savefig(path)
 
@@ -79,7 +77,6 @@ plt.plot(clique_sizes, [test_results[cs, 'mismatch'] for cs in clique_sizes], 'b
 plt.xlabel('Edge density')
 plt.ylabel('Mismatch')
 plt.title('Test Mismatch: N={}'.format(logger.args['N']))
-plt.legend()
 path = 'plots/test_mismatch_N={}_trained_with_C'.format(logger.args['N'])
 plt.savefig(path)
 
