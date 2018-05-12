@@ -44,8 +44,8 @@ for C in clique_sizes:
     generator.NUM_SAMPLES_test = 100
     generator.create_test_dataset()
     print('Test dataset created')
-    test_results[cs, 'loss'], test_results[cs, 'accuracy'], _, test_results[cs, 'mismatch'] = test(gnn, generator, logger)
-    test_results[cs, 'mismatch'] /= float(C)
+    test_results[C, 'loss'], test_results[C, 'accuracy'], _, test_results[C, 'mismatch'] = test(gnn, generator, logger)
+    test_results[C, 'mismatch'] /= float(C)
         
 # plot test loss
 
