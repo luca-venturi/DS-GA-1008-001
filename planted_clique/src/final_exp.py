@@ -22,7 +22,7 @@ dtype_l = torch.cuda.LongTensor
 
 logger = make_logger()
 
-clique_sizes = np.arange(5, 20) # 33
+clique_sizes = np.arange(5, 11) # 33
 test_results = {}
 for C in clique_sizes:
     generator = dataGenerator()
@@ -51,7 +51,7 @@ for C in clique_sizes:
 
 plt.figure(0)
 plt.clf()
-plt.semilogy(densities, [test_results[cs, 'loss'] for cs in clique_sizes], 'b')
+plt.semilogy(clique_sizes, [test_results[cs, 'loss'] for cs in clique_sizes], 'b')
 plt.xlabel('Edge density')
 plt.ylabel('Cross Entropy Loss')
 plt.title('Test Loss: N={}'.format(logger.args['N']))
@@ -63,7 +63,7 @@ plt.savefig(path)
 
 plt.figure(1)
 plt.clf()
-plt.plot(densities, [test_results[cs, 'accuracy'] for cs in clique_sizes], 'b')
+plt.plot(clique_sizes, [test_results[cs, 'accuracy'] for cs in clique_sizes], 'b')
 plt.xlabel('Edge density')
 plt.ylabel('Accuracy')
 plt.title('Test Accuracy: N={}'.format(logger.args['N']))
@@ -75,7 +75,7 @@ plt.savefig(path)
 
 plt.figure(2)
 plt.clf()
-plt.plot(densities, [test_results[cs, 'mismatch'] for d in clique_sizes], 'b')
+plt.plot(clique_sizes, [test_results[cs, 'mismatch'] for d in clique_sizes], 'b')
 plt.xlabel('Edge density')
 plt.ylabel('Mismatch')
 plt.title('Test Mismatch: N={}'.format(logger.args['N']))
