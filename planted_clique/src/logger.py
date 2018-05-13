@@ -35,7 +35,8 @@ def compute_exact_recovery_rate(pred, labels):
     
 def compute_mismatch(pred, labels):
     pred = predict_clique(pred)
-    error = 1 - torch.eq(pred, labels).type(dtype)
+    # error = 1 - torch.eq(pred, labels).type(dtype)
+    error = 1 - (torch.eq(pred + labels, 2).type(dtype) + torch.eq(pred + labels, 0).type(dtype))
     frob_norm = torch.sum(error, 1)
     accuracy = frob_norm.mean(0).squeeze()
     return accuracy.data.cpu().numpy()[0]

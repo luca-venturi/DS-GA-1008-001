@@ -75,12 +75,12 @@ plt.figure(2)
 plt.clf()
 plt.plot(clique_sizes, [test_results[cs, 'mismatch'] for cs in clique_sizes], 'b')
 plt.xlabel('Edge density')
-plt.ylabel('Mismatch')
-plt.title('Test Mismatch: N={}'.format(logger.args['N']))
-path = 'plots/test_mismatch_N={}_trained_with_C'.format(logger.args['N'])
+plt.ylabel('Recovery mismatch')
+plt.title('Test Recovery Mismatch: N={}'.format(logger.args['N']))
+path = 'plots/test_recovery_mismatch_N={}_trained_with_C'.format(logger.args['N'])
 plt.savefig(path)
 
 # print
 
 for cs in clique_sizes:
-    print('CS = {} -> mismatch = {}'.format(cs, test_results[cs, 'mismatch']))
+    print('CS = {} -> recovery mismatch = {}'.format(cs, test_results[cs, 'mismatch']))
