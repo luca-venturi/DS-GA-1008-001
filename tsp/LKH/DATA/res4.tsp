@@ -1,0 +1,12 @@
+NAME : pr4.tsp.177162.tour
+COMMENT : Length = 177162
+COMMENT : Found by LKH [Keld Helsgaun] Sun May 13 20:23:16 2018
+TYPE : TOUR
+DIMENSION : 4
+TOUR_SECTION
+1
+3
+2
+4
+-1
+EOF
